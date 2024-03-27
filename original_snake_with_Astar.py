@@ -5,6 +5,9 @@ from numpy import sqrt
 
 init()
 
+# Define done as a global variable
+done = False
+
 # Screen dimensions
 width = 600
 height = 600
@@ -25,12 +28,22 @@ RED = (255, 0, 0)
 clock = time.Clock()
 
 def gameLoop():
+    global done  # Declare done as global within the function
     screen = display.set_mode([width, height])
-    display.set_caption("Snake Self")
-
-    done = False
+    display.set_caption("Snake ni Nool :)")
 
     def getpath(food1, snake1):
+        """
+        Implementation of the A* algorithm to find the shortest path from the snake's head to the food.
+
+        Parameters:
+        - food1: The target food location.
+        - snake1: The current snake positions.
+
+        Returns:
+        - dir_array1: The array containing directions for the snake to move towards the food.
+        """
+        # Initialize the open and closed sets
         food1.camefrom = []
         for s in snake1:
             s.camefrom = []
@@ -38,28 +51,38 @@ def gameLoop():
         closedset = []
         dir_array1 = []
 
+        # Main loop of the A* algorithm
         while 1:
+            # Find the node in the open set with the lowest f score
             current1 = min(openset, key=lambda x: x.f)
+            
+            # Remove the current node from the open set and add it to the closed set
             openset = [openset[i] for i in range(len(openset)) if not openset[i] == current1]
             closedset.append(current1)
-
+            
+            # For each neighbor of the current node
             for neighbor in current1.neighbors:
+                # If the neighbor is not in the closed set and is not an obstacle and is not in the snake
                 if neighbor not in closedset and not neighbor.obstrucle and neighbor not in snake1:
+                    # Calculate the tentative g score for the neighbor
                     tempg = neighbor.g + 1
+                    # If the neighbor is in the open set and the tentative g score is less than the neighbor's current g score
                     if neighbor in openset:
                         if tempg < neighbor.g:
+                            # Update the neighbor's g score
                             neighbor.g = tempg
                     else:
+                        # If the neighbor is not in the open set, set its g score to the tentative g score and add it to the open set
                         neighbor.g = tempg
                         openset.append(neighbor)
-
+                    # Calculate the h and f scores for the neighbor
                     neighbor.h = sqrt((neighbor.x - food1.x) ** 2 + (neighbor.y - food1.y) ** 2)
                     neighbor.f = neighbor.g + neighbor.h
                     neighbor.camefrom = current1
-
+            # If the current node is the goal, exit the loop
             if current1 == food1:
                 break
-
+        # After the loop, construct the path from the goal to the start by following the parent pointers
         while current1.camefrom:
             if current1.x == current1.camefrom.x and current1.y < current1.camefrom.y:
                 dir_array1.append(2)
@@ -70,14 +93,13 @@ def gameLoop():
             elif current1.x > current1.camefrom.x and current1.y == current1.camefrom.y:
                 dir_array1.append(1)
             current1 = current1.camefrom
-
+        # Reset the f, g, and h scores and the parent pointers for all nodes
         for i in range(rows):
             for j in range(cols):
                 grid[i][j].camefrom = []
                 grid[i][j].f = 0
                 grid[i][j].h = 0
                 grid[i][j].g = 0
-
         return dir_array1
 
     class Spot:

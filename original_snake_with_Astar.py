@@ -30,7 +30,7 @@ clock = time.Clock()
 def gameLoop():
     global done  # Declare done as global within the function
     screen = display.set_mode([width, height])
-    display.set_caption("Snake ni Nool :)")
+    display.set_caption("Mahabang Snake ni :)")
 
     def getpath(food1, snake1):
         """

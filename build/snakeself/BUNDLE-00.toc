@@ -1,0 +1,3 @@
+([('snakeself',
+   '/Users/angelo/Desktop/Github Files/snake_star/dist/snakeself',
+   'EXECUTABLE')],)

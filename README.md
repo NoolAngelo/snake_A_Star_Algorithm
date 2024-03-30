@@ -1,7 +1,4 @@
 # Autonomous snake game using A star Algorithm
-Self playing pygame based snake game playing with A-star algorithm
-This uses A* algorithm to search food in the workspace there by avoiding obstrucles
-
-Just copy the code 'snakeself.py ' and run in any Python IDE... and enjoy the computer playing itself
+This research will focus in the design and implementation of A*star algorithm in a snake game, this algorithm will be the fundamental heuristic for the snake to become autonomous, and can navigate in four different directions in the grid. 
 
 

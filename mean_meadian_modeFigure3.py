@@ -1,3 +1,4 @@
+#mean median and mode with time taken for each trial
 import matplotlib.pyplot as plt
 import statistics
 
